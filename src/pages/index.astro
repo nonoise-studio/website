@@ -1,0 +1,315 @@
+---
+import DotBanner from '../components/branding/DotBanner.astro';
+import Mess from '../components/branding/Mess.astro';
+
+// Before / After slider
+import BeforeAfterSlider from '../components/BeforeAfterSlider.astro';
+import DataTab from '../partials/DataTab.astro';
+import ProcessTab from '../partials/ProcessTab.astro';
+import GameTab from '../partials/GameTab.astro';
+import AutomationTab from '../partials/AutomationTab.astro';
+
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// TABS
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+		<body>
+			<Header />
+			<!-- HERO -->
+	<!-- HERO -->
+			<!-- <section id="hero">
+				<div id="hero-carousel">
+					<p class="statement active">
+						Your people are smart. Your intentions are good.<br/>
+						So why is everything still so complicated?
+					</p>
+					<p class="statement">
+						Every organisation makes sense from the inside.<br/>
+						From the outside, it's often chaos.
+					</p>
+					<p class="statement">
+						You know your organisation better than anyone.<br/>
+						Something still isn't working.
+					</p>
+				</div>
+				<p id="relief">
+					That's not a people problem.<br/>
+					That's a noise problem.
+				</p>
+				<a href="#contact" class="cta">Let's fix it →</a>
+			</section> -->
+			<main>
+				<!-- HERO -->
+				<section id="hero">
+					<span class="hero-logo">nonoise</span>
+					<h1 style="font-weight: 400;">Making your workflow <span id="hero-swap" data-swap={['fun', 'smooth', 'clear', 'automated']} class="hero-swap-statement">fun</span></h1>
+					<a href="/contact" class="cta" style="margin-top: 3rem;">Let's fix it →</a>
+				</section>	
+
+				<!-- BANNER -->
+				<DotBanner 
+					words={[{ text: "data", href: "/projects/data" }, { text: "process", href: "/projects/process" }, { text: "automation", href: "/projects/automation" }, { text: "gamification", href: "/projects/games" }]}
+					direction="left" 
+					speed={40}
+				/>
+
+				<!-- SERVICES -->
+				 <section id="services">
+					<h2>Where's the noise?</h2>
+					<Tabs>
+						<TabItem label="Data">
+							<p>You have data. Not enough insight. There is too much to look at, but too little to act on. Turn that data into useful, intuitive information.</p>
+								<DataTab />
+						</TabItem>
+						<TabItem label="Process">
+							<p>Your process works, not everybody understands why. Eliminate redundant steps to give you the space work on what really matters.</p>
+							<ProcessTab />
+						</TabItem>
+						<TabItem label="Gamification">
+							<p>Complex problems with endless, boring briefings. Bring that complexity into practice by making it interactive.</p>
+							<GameTab />
+						</TabItem>
+						<TabItem label="Automation">
+							<p>Your tools don't talk to each other. You are the translator. Skip repetetive tasks and focus on the work that needs your attention.</p>
+							<AutomationTab />
+						</TabItem>
+					</Tabs>
+
+					<div class="actions">
+						<a href="/contact" class="cta">Let's fix this →</a>
+						<a href="/projects" class="btn-secondary">Examples</a>
+					</div>
+				</section>
+
+				<!-- HOW I WORK -->
+				<section id="how">
+					<h2>how we work</h2>
+					<DotBanner
+						words={["no nonsense", "no decorum", "no noise"]}
+						direction="right"
+						speed={30}
+						hoverEffect={false}
+					/>
+					<ul>
+						<li>No decks for the sake of decks.</li>
+						<li>No meetings for the sake of meetings.</li>
+						<li>No jargon to sound smart.</li>
+						<li>Just the problem, the solution, and the result.</li>
+					</ul>
+				</section>
+
+				<!-- CONTACT -->
+				<section id="contact">
+					<h2>enough talk.</h2>
+					<div class="contact-links">
+						<a href="mailto:hello@nnstudio.nl">hello@nnstudio.nl</a>
+						<a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin</a>
+						<span>rotterdam, nl</span>
+					</div>
+				</section>
+
+			</main>
+			<Footer />
+
+			<script>
+				// CYCLE THROUGH HERO STATEMENTS
+				const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+				async function typeOut(element: HTMLElement, text: string, speed = 50) {
+					for (let i = 0; i <= text.length; i++) {
+						element.textContent = text.slice(0, i);
+						await sleep(speed);
+					}
+				}
+
+				async function typeBack(element: HTMLElement, speed = 50) {
+					const text = element.textContent ?? '';
+					for (let i = text.length; i >= 0; i--) {
+						element.textContent = text.slice(0, i);
+						await sleep(speed);
+					}
+				}
+
+				async function startSwap(element: HTMLElement, words: string[], delay = 3000, speed = 50) {
+					let index = 0;
+					while (true) {
+						await sleep(delay);
+						await typeBack(element, speed);
+						index = (index + 1) % words.length;
+						await typeOut(element, words[index], speed);
+					}
+				}
+
+				const swapElement = document.getElementById('hero-swap');
+				if (swapElement) {
+					const words = swapElement.dataset?.swap?.split(',') ?? [];
+					if (words.length > 0) startSwap(swapElement, words);
+				}
+			</script>
+
+			<style is:global>
+
+				/* CSS VARS FOR TABBED EXAMPLES */
+				:root {
+					--color-background-primary: #fff;
+					--color-background-secondary: #f9f9f9;
+					--color-border-primary: #ddd;
+					--color-border-secondary: #ccc;
+					--color-border-tertiary: #eee;
+					--color-text-primary: #333;
+					--color-text-secondary: #666;
+					--color-text-tertiary: #999;
+					--font-sans: 'Open Sans', sans-serif;
+				}
+
+				/* HERO */
+				#hero {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					padding: 4rem 2rem;
+				}
+
+				.hero-logo {
+					font-family: var(--font-bitcount, monospace);
+					font-size: 1.2rem;
+					text-transform: lowercase;
+					font-size: 3rem;
+				}
+
+				.hero-swap-statement {
+					font-family: var(--font-bitcount, monospace);
+					color: var(--electric);
+					font-weight: 500;
+					line-height: 0.9em;
+					min-width: 9ch;
+					min-height: 1em;
+					display: block;
+				}
+
+				#hero-carousel {
+					position: relative;
+					min-height: 5rem;
+					border: solid 1px green;
+				}
+
+
+				.cta {
+					display: inline-block;
+					padding: 0.75em 1.5em;
+					border: 2px solid var(--electric);
+					color: var(--electric);
+					text-decoration: none;
+					font-family: var(--font-fredoka, sans-serif);
+					font-size: 1.1rem;
+					transition: background 0.2s ease, color 0.2s ease;
+				}
+
+				.cta:hover {
+					background: var(--electric);
+					color: white;
+				}
+
+				/* SERVICES */
+				#services {
+					display: flex;
+					flex-direction: column;
+				}
+
+				.service h3 {
+					font-family: var(--font-bitcount, monospace);
+					font-size: 1.2rem;
+					margin-bottom: 0.5rem;
+					color: var(--electric);
+				}
+
+				.service p {
+					font-size: 0.95rem;
+					line-height: 1.6;
+				}
+
+				.tab-panel {
+					padding: 2rem;
+				}
+
+				/* HOW I WORK */
+				#how {
+					max-width: 860px;
+					margin: 6rem auto;
+					padding: 0 2rem;
+					display: flex;
+					flex-direction: column;
+					gap: 2rem;
+				}
+
+				#how h2 {
+					font-family: var(--font-bitcount, monospace);
+					font-size: 1.4rem;
+				}
+
+				#how ul {
+					list-style: none;
+					padding: 0;
+					display: flex;
+					flex-direction: column;
+					gap: 0.75rem;
+				}
+
+				#how ul li {
+					font-size: 1.1rem;
+					font-family: var(--font-fredoka, sans-serif);
+				}
+
+				#how ul li::before {
+					content: '— ';
+					color: var(--electric);
+				}
+
+				/* CONTACT */
+				#contact {
+					max-width: 860px;
+					margin: 6rem auto;
+					padding: 0 2rem 6rem;
+					display: flex;
+					flex-direction: column;
+					gap: 1.5rem;
+				}
+
+				#contact h2 {
+					font-family: var(--font-bitcount, monospace);
+					font-size: 2rem;
+				}
+
+				.contact-links {
+					display: flex;
+					gap: 2rem;
+					flex-wrap: wrap;
+					font-family: var(--font-fredoka, sans-serif);
+					font-size: 1.1rem;
+				}
+
+				.contact-links a {
+					color: var(--electric);
+					text-decoration: none;
+					border-bottom: 1px solid var(--electric);
+				}
+
+				.contact-links a:hover {
+					background: var(--electric);
+					color: white;
+				}
+			</style>
+		</body>
+
+</html>

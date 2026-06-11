@@ -1,0 +1,128 @@
+
+<div class="slider-wrap">
+    <div class="side before-side" id="before-data"> 
+        <div class="side-label">before</div>
+        <slot name="before" />
+    </div>
+    <div class="side after-side" id="after-data">
+        <div class="side-label">after</div>
+        <slot name="after" />
+    </div>
+    <div class="divider-line"></div>
+    <div class="divider-pill">slide</div>
+    <script>
+        (function() {
+        const wraps = document.getElementsByClassName('slider-wrap');
+        function setPos(x: number, wrap: HTMLElement) {
+            const r = wrap.getBoundingClientRect();
+            const pct = Math.min(Math.max((x - r.left) / r.width * 100, 1), 99);
+            // Setting child elements
+            const before = wrap.querySelector('#before-data') as HTMLElement | null;
+            const line = wrap.querySelector('.divider-line')    as HTMLElement;
+            const pill = wrap.querySelector('.divider-pill') as HTMLElement;
+            line.style.left = pct + '%';
+            pill.style.left = pct + '%';
+            if (before) before.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+        }
+
+        // Setup event listeners for all slider-wrap instances
+        for (let i = 0; i < wraps.length; i++) {
+            const wrap = wraps[i] as HTMLElement;
+            let mouseInWindow = false;
+            wrap.addEventListener('mouseenter', () => { mouseInWindow = true; console.log('enter'); });
+            wrap.addEventListener('mouseleave', () => { mouseInWindow = false; });
+            window.addEventListener('mousemove', e => { if (mouseInWindow) setPos(e.clientX, wrap); });
+            // wrap.addEventListener('touchstart', e => { if (e.touches[0]) setPos(e.touches[0].clientX); }, { passive: true });
+            window.addEventListener('touchmove', e => { if (e.touches[0]) setPos(e.touches[0].clientX, wrap); }, { passive: true });
+
+            const r = wrap.getBoundingClientRect();
+            setPos(r.left + r.width * 0.5, wrap);
+        }
+    })();
+    </script>
+</div>
+
+<style is:global>
+    .slider-wrap {
+        --active-color: color-mix(in srgb, var(--obsidian) 40%, white);
+        --bg-color: color-mix(in srgb, var(--peach) 20%, white);
+        position: relative;
+        width: 100%;
+        height: 300px;
+        border-radius: 8px;
+        border: 0.5px solid color-mix(in srgb, var(--terra) 20%, white);
+        overflow: hidden;
+        margin-bottom: 1rem;
+        cursor: ew-resize;
+    }
+
+    .slider-wrap:hover {
+       --active-color: var(--electric);
+    }
+    .side {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: var(--bg-color);
+    }
+
+    .after-side {
+        z-index: -1;
+    }
+
+
+    .side-label {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        font-size: 1rem;
+        color: var(--active-color);
+        text-transform: uppercase;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+    }
+
+    .after-side .side-label {
+        left: auto;
+        right: 16px;
+    }
+
+    .ill{
+        position: absolute;
+        inset: 16px;
+        margin-top: 32px;
+    }
+
+    .divider-line {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1.5px;
+        background: var(--active-color);
+        opacity: 0.2;
+        transform: translateX(-50%);
+        pointer-events: none;
+        z-index: 5;
+    }
+    .divider-pill {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--bg-color);
+        border: 0.5px solid var(--active-color);
+        border-radius: 20px;
+        padding: 4px 8px;
+        font-size: 11px;
+        color: var(--active-color);
+        pointer-events: none;
+        z-index: 6;
+        white-space: nowrap;
+    }
+
+    text {
+        user-select: none;
+    }
+</style>

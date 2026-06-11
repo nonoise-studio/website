@@ -1,0 +1,218 @@
+---
+interface Props {
+    words?: string | string[] | { text: string; href?: string }[];
+    direction?: 'left' | 'right' | 'none';
+    speed?: number;
+    hoverEffect?: boolean;
+    separator?: string;
+    class?: string;
+}
+
+const {
+    words = ['nonoise'],
+    direction = 'none',
+    speed = 50,
+    hoverEffect = true,
+    separator = '•',
+    class: className
+} = Astro.props;
+
+const normalised = Array.isArray(words)
+    ? words.map(w => typeof w === 'string' ? { text: w } : w)
+    : [{ text: typeof words === 'string' ? words : 'nonoise' }];
+---
+
+<div
+    class:list={['repeating-banner', { 'hover-enabled': hoverEffect }, className]}
+    data-direction={direction}
+    data-speed={speed}
+    data-separator={separator}
+>
+    <template data-words>{JSON.stringify(normalised)}</template>
+    <div class="track">
+        <span class="inner"></span>
+        <span class="inner"></span>
+    </div>
+</div>
+
+<script>
+    type Word = { text: string; href?: string };
+
+    function buildSpans(count: number, inner: HTMLElement, words: Word[], separator: string) {
+        inner.innerHTML = '';
+
+        for (let i = 0; i < count; i++) {
+            for (let wi = 0; wi < words.length; wi++) {
+                const w = words[wi];
+                const isLast = wi === words.length - 1;
+
+                if (w.href) {
+                    const a = document.createElement('a');
+                    a.href = w.href;
+                    a.textContent = w.text;
+                    a.classList.add('word-group');
+                    inner.appendChild(a);
+                } else {
+                    const span = document.createElement('span');
+                    span.textContent = w.text;
+                    span.classList.add('word-group');
+                    inner.appendChild(span);
+                }
+
+                if (separator) {
+                    const sep = document.createElement('span');
+                    sep.textContent = separator;
+                    sep.classList.add('separator');
+                    inner.appendChild(sep);
+                } else {
+                    const space = document.createElement('span');
+                    space.textContent = ' ';
+                    inner.appendChild(space);
+                }
+            }
+        }
+    }
+
+    function setupBanner(banner: HTMLElement) {
+        const template = banner.querySelector<HTMLElement>('template[data-words]')!;
+        const words: Word[] = JSON.parse(template.innerHTML.trim());
+        const sequence = words.map(w => w.text).join(' ');
+
+        const track = banner.querySelector('.track') as HTMLElement;
+        const inners = banner.querySelectorAll<HTMLElement>('.inner');
+        const direction = banner.dataset.direction as 'left' | 'right' | 'none';
+        const speed = parseFloat(banner.dataset.speed!);
+        const separator = banner.dataset.separator ?? '';
+
+        // Measure full sequence width
+        const measurer = document.createElement('span');
+        measurer.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;';
+        measurer.textContent = sequence + ' ';
+        const innerStyle = getComputedStyle(inners[0]);
+        measurer.style.font = innerStyle.font;
+        measurer.style.letterSpacing = innerStyle.letterSpacing;
+        measurer.style.fontFamily = innerStyle.fontFamily;
+        document.body.appendChild(measurer);
+        const sequenceWidth = measurer.getBoundingClientRect().width;
+        document.body.removeChild(measurer);
+
+        let animationId: number | undefined;
+
+        function update() {
+            const parentWidth = banner.parentElement!.getBoundingClientRect().width;
+            const extra = Math.max(parentWidth * 0.1, parseFloat(getComputedStyle(banner).fontSize) * 3);
+            const totalWidth = parentWidth + extra;
+            const count = Math.ceil(totalWidth / sequenceWidth) + 1;
+
+            inners.forEach(inner => {
+                buildSpans(count, inner, words, separator);
+                inner.style.width = '';
+            });
+
+            const actualWidth = inners[0].getBoundingClientRect().width;
+            inners.forEach(inner => {
+                inner.style.width = `${actualWidth}px`;
+            });
+
+            const singleWidth = actualWidth;
+            track.style.width = `${singleWidth * 2}px`;
+
+            const offset = extra / 2;
+            track.style.transform = `translateX(-${offset}px)`;
+
+            if (animationId) cancelAnimationFrame(animationId);
+            if (direction === 'none') return;
+
+            const duration = (singleWidth / speed) * 1000;
+            const keyframes = direction === 'left'
+                ? [
+                    { transform: `translateX(-${offset}px)` },
+                    { transform: `translateX(-${singleWidth + offset}px)` }
+                ]
+                : [
+                    { transform: `translateX(-${singleWidth - offset}px)` },
+                    { transform: `translateX(-${offset}px)` }
+                ];
+
+            track.animate(keyframes, {
+                duration,
+                iterations: Infinity,
+                easing: 'linear'
+            });
+        }
+
+        update();
+
+        // Listen for hover on word groups to pause animation
+        const slowSpeed = Math.min(speed * 0.5, 20);
+
+        banner.addEventListener('mouseover', (e) => {
+            if ((e.target as HTMLElement).closest('a.word-group')) {
+                track.getAnimations().forEach(a => a.playbackRate = slowSpeed / speed);
+            }
+        });
+
+        banner.addEventListener('mouseout', (e) => {
+            if ((e.target as HTMLElement).closest('a.word-group')) {
+                track.getAnimations().forEach(a => a.playbackRate = 1);
+            }
+        });
+
+        // Recalculate on resize
+        const ro = new ResizeObserver(update);
+        ro.observe(banner.parentElement!);
+    }
+
+    document.fonts.ready.then(() => {
+        document.querySelectorAll<HTMLElement>('.repeating-banner').forEach(setupBanner);
+    });
+</script>
+
+<style is:global>
+.repeating-banner {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    cursor: default;
+}
+
+.track {
+    display: flex;
+    flex-shrink: 0;
+    will-change: transform;
+}
+
+.inner {
+    white-space: nowrap;
+    display: block;
+    flex-shrink: 0;
+    font-family: var(--font-doto, monospace);
+}
+
+.word-group {
+    display: inline;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hover-enabled .word-group:hover {
+    color: var(--accent);
+    font-weight: 900;
+}
+
+
+a.word-group {
+    cursor: pointer;
+}
+a.word-group:hover {
+    /* border-bottom: solid 1px currentColor; */
+}
+
+
+.separator {
+    display: inline-block;
+    pointer-events: none;
+    opacity: 0.4;
+}
+</style>

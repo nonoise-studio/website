@@ -1,0 +1,59 @@
+---
+import BeforeAfterSlider from '../components/BeforeAfterSlider.astro';
+---
+<BeforeAfterSlider>
+    <Fragment slot="before">
+        <svg class="ill" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="8" width="130" height="144" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="65" y="22" font-size="7" text-anchor="middle" font-weight="500" fill="var(--color-text-secondary)" font-family="var(--font-sans)">CRM</text>
+            <text x="10" y="36" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ export contacts.csv</text>
+            <text x="10" y="47" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ paste into sheet</text>
+            <text x="10" y="58" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ remove duplicates</text>
+            <text x="10" y="69" font-size="6" fill="#c0392b" font-family="var(--font-sans)">☐ fix date format (again)</text>
+            <text x="10" y="80" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ send to finance</text>
+            <text x="10" y="91" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ wait for reply</text>
+            <text x="10" y="102" font-size="6" fill="#c0392b" font-family="var(--font-sans)">☐ chase finance (day 3)</text>
+            <text x="10" y="113" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ re-export (updated)</text>
+            <text x="10" y="124" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ repeat monthly</text>
+            <rect x="140" y="8" width="130" height="144" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="205" y="22" font-size="7" text-anchor="middle" font-weight="500" fill="var(--color-text-secondary)" font-family="var(--font-sans)">ERP</text>
+            <text x="150" y="36" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ open legacy portal</text>
+            <text x="150" y="47" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ manually re-enter data</text>
+            <text x="150" y="58" font-size="6" fill="#c0392b" font-family="var(--font-sans)">☐ field names differ??</text>
+            <text x="150" y="69" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ call IT</text>
+            <text x="150" y="80" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ IT says "works for me"</text>
+            <text x="150" y="91" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ try different browser</text>
+            <text x="150" y="102" font-size="6" fill="#c0392b" font-family="var(--font-sans)">☐ use IE (seriously)</text>
+            <text x="150" y="113" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ submit ticket</text>
+            <text x="150" y="124" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ ticket closed: "no repro"</text>
+            <rect x="280" y="8" width="130" height="144" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="345" y="22" font-size="7" text-anchor="middle" font-weight="500" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Reporting</text>
+            <text x="290" y="36" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ open Excel (2003)</text>
+            <text x="290" y="47" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ enable macros</text>
+            <text x="290" y="58" font-size="6" fill="#c0392b" font-family="var(--font-sans)">☐ macro broken again</text>
+            <text x="290" y="69" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ manually sum columns</text>
+            <text x="290" y="80" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ copy to PowerPoint</text>
+            <text x="290" y="91" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ reformat charts</text>
+            <text x="290" y="102" font-size="6" fill="#c0392b" font-family="var(--font-sans)">☐ numbers don't match CRM</text>
+            <text x="290" y="113" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ start over</text>
+            <text x="290" y="124" font-size="6" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">☐ miss the deadline anyway</text>
+        </svg>
+    </Fragment>
+    <Fragment slot="after">
+        <svg class="ill" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="180" y="16" width="200" height="32" rx="4" fill="var(--color-background-secondary)" stroke="var(--electric)" stroke-width="1"/>
+            <text x="280" y="36" font-size="10" text-anchor="middle" font-weight="500" fill="var(--color-text-primary)" font-family="var(--font-sans)">Single source of truth</text>
+            <line x1="230" y1="48" x2="160" y2="80" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <line x1="280" y1="48" x2="280" y2="80" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <line x1="330" y1="48" x2="400" y2="80" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="100" y="80" width="90" height="28" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="145" y="98" font-size="9" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">CRM</text>
+            <rect x="235" y="80" width="90" height="28" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="280" y="98" font-size="9" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">ERP</text>
+            <rect x="370" y="80" width="90" height="28" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="415" y="98" font-size="9" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Reporting</text>
+            <text x="280" y="136" font-size="11" text-anchor="middle" font-weight="500" fill="var(--electric)" font-family="var(--font-sans)">Runs at 9am. Done.</text>
+            <text x="280" y="152" font-size="9" text-anchor="middle" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">No Excel. No chasing. No IE.</text>
+        </svg>
+    </Fragment>
+</BeforeAfterSlider>

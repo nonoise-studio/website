@@ -1,0 +1,32 @@
+---
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import BaseHead from '../components/BaseHead.astro';
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<BaseHead title="Contact" description="Get in touch with nonoise studio."/>
+<Layout
+	title="Contact"
+	description="Get in touch with nonoise studio."
+	pubDate={new Date('August 08 2021')}
+	heroImage={AboutHeroImage}
+>
+	  <h1>Contact Us</h1>
+  <form action="https://web3forms.com/access_key" method="POST">
+    <input type="hidden" name="from_name" value="Website Contact Form" />
+    
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" required />
+    
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required />
+    
+    <label for="message">Message</label>
+    <textarea name="message" id="message" rows="5" required></textarea>
+    
+    <!-- Honeypot for spam protection -->
+    <input type="text" name="honeypot" style="display:none" />
+    
+    <button type="submit">Send Message</button>
+  </form>
+</Layout>

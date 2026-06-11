@@ -1,0 +1,234 @@
+---
+interface Props {
+    jargon?: string[];
+}
+
+const {
+    jargon = [
+        'synergy', 'leverage', 'bandwidth', 'stakeholder alignment',
+        'circle back', 'KPI', 'low-hanging fruit', 'move the needle',
+        'deep dive', 'pivot', 'agile', 'scalable solution', 'value add',
+        'best practice', 'pain point', 'ecosystem', 'streamline',
+        'actionable insights', 'robust', 'holistic approach',
+        'noise', 'NOISE', 'noise', 'noise noise', '█████',
+        'disruption', 'innovation', 'paradigm shift', 'going forward',
+        'touch base', 'boil the ocean', 'peel the onion',
+    ],
+} = Astro.props;
+---
+
+<div id="noise-panel" data-jargon={JSON.stringify(jargon)}>
+    <img class="noise-bg" src="src/assets/static_noise.gif" alt="noise" />
+    <canvas id="noise-canvas"></canvas>
+    <div id="relief">
+        <slot />
+    </div>
+    <button id="nonoise-btn">nonoise</button>
+</div>
+
+<script>
+    const panel = document.getElementById('noise-panel') as HTMLElement;
+    const canvas = document.getElementById('noise-canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d')!;
+    const btn = document.getElementById('nonoise-btn') as HTMLButtonElement;
+    const reliefElement = document.getElementById('relief') as HTMLElement;
+
+    const jargon: string[] = JSON.parse(panel.dataset.jargon!);
+
+    let words: { text: string; x: number; y: number; vx: number; vy: number; rot: number; vrot: number; size: number; opacity: number }[] = [];
+    let cleared = false;
+    let spawnInterval: ReturnType<typeof setInterval>;
+    let animFrame: number;
+
+    function resize() {
+        canvas.width = panel.offsetWidth;
+        canvas.height = panel.offsetHeight;
+    }
+
+    function spawnWord() {
+        if (cleared) return;
+        words.push({
+            text: jargon[Math.floor(Math.random() * jargon.length)],
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            rot: Math.random() * Math.PI * 2,
+            vrot: (Math.random() - 0.5) * 0.01,
+            size: Math.floor(Math.random() * 14) + 10,
+            opacity: 0,
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        words.forEach(w => {
+            w.x += w.vx;
+            w.y += w.vy;
+            w.rot += w.vrot;
+            w.opacity = Math.min(w.opacity + 0.005, 0.85);
+
+            if (w.x < -200) w.x = canvas.width + 100;
+            if (w.x > canvas.width + 200) w.x = -100;
+            if (w.y < -50) w.y = canvas.height + 50;
+            if (w.y > canvas.height + 50) w.y = -50;
+
+            ctx.save();
+            ctx.translate(w.x, w.y);
+            ctx.rotate(w.rot);
+            ctx.font = `${w.size}px monospace`;
+            ctx.fillStyle = `rgba(180, 160, 140, ${w.opacity})`;
+            ctx.fillText(w.text, 0, 0);
+            ctx.restore();
+        });
+
+        animFrame = requestAnimationFrame(draw);
+    }
+
+    function clear() {
+        cleared = true;
+        clearInterval(spawnInterval);
+
+        let fade = 1;
+        function fadeOut() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            fade -= 0.03;
+
+            words.forEach(w => {
+                ctx.save();
+                ctx.translate(w.x, w.y);
+                ctx.rotate(w.rot);
+                ctx.font = `${w.size}px monospace`;
+                ctx.fillStyle = `rgba(180, 160, 140, ${w.opacity * fade})`;
+                ctx.fillText(w.text, 0, 0);
+                ctx.restore();
+            });
+
+            if (fade > 0) {
+                requestAnimationFrame(fadeOut);
+            } else {
+                cancelAnimationFrame(animFrame);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                showSlogan();
+            }
+        }
+
+        cancelAnimationFrame(animFrame);
+        fadeOut();
+        btn.style.opacity = '0';
+        btn.style.pointerEvents = 'none';
+    }
+
+    function showSlogan() {
+        reliefElement.classList.add('visible');
+        panel.classList.add('cleared');
+    }
+
+    btn.addEventListener('click', clear);
+
+    resize();
+    new ResizeObserver(resize).observe(panel);
+
+    // Spawn words gradually
+    for (let i = 0; i < 12; i++) {
+        setTimeout(spawnWord, i * 300);
+    }
+    spawnInterval = setInterval(spawnWord, 800);
+
+    // Gradually increase noise background opacity
+    const noiseBg = document.querySelector('.noise-bg') as HTMLElement;
+    let bgOpacity = 0
+    const opacityCap = 0.2;
+    const timingIn = 4000; // Time to reach full opacity
+    const timingOut = 500; // Time to fade out after clear
+    const intervalRate = 50; // Interval for opacity updates
+    const bgFadeInterval = setInterval(() => {
+        // Stop after clear
+        if (cleared && bgOpacity <= 0) {
+            clearInterval(bgFadeInterval); //Stop
+            return;
+        }
+        if (bgOpacity >= opacityCap && !cleared) return; // Cap opacity before clear
+        // If cleared, fade out noise
+        if (cleared) bgOpacity = bgOpacity - (opacityCap * intervalRate / timingOut); // Decrease opacity gradually based on timing
+        else bgOpacity = Math.min(bgOpacity + (opacityCap * intervalRate / timingIn), opacityCap); // Increase opacity gradually based on timing but cap it
+        noiseBg.style.opacity = bgOpacity.toString();
+    }, intervalRate);
+
+    draw();
+    
+</script>
+
+<style>
+    #noise-panel {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background: transparent;
+        background: white;
+        transition: opacity 0.8s ease;
+        z-index: 10;
+    }
+
+    #noise-panel.clearedyy {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #noise-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #nonoise-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        font-family: var(--font-bitcount, monospace);
+        font-size: 1.8rem;
+        background: transparent;
+        border: 2px solid currentColor;
+        padding: 0.5em 1.2em;
+        cursor: pointer;
+        transition: opacity 0.8s ease;
+        letter-spacing: 0.05em;
+        z-index: 2;
+    }
+
+    #nonoise-btn:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+    }
+
+    #relief {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        opacity: 0;
+        transition: opacity 1.2s ease 0.3s;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    #relief.visible {
+        opacity: 1;
+    }
+
+    .noise-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        z-index: 0;
+    }
+</style>

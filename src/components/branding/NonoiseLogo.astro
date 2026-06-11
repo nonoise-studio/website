@@ -1,0 +1,55 @@
+---
+const BRAND_NAME = 'nonoise';
+const BRAND_SUB = 'studio';
+const LOGO_PATH = '/assets/branding/logo.svg';
+
+const { size = "1.5rem" } = Astro.props;
+
+const letters = BRAND_NAME.split('');
+---
+
+<a id="logo-wrapper" href="/" style={`font-size: ${size}`}>
+    <span class="main">
+        {letters.map((letter, i) => (
+            <span class={`letter ${letter === 'n' ? 'n-letter' : ''}`} style={`--i: ${i}`}>
+                {letter}
+            </span>
+        ))}
+    </span>
+    <span class="sub">{BRAND_SUB}</span>
+</a>
+
+<style>
+#logo-wrapper {
+    color: unset;
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.25em;
+}
+#logo-wrapper .main {
+    font-family: var(--font-bitcount, sans-serif);
+    font-size: 1.5em;
+    font-weight: normal;
+    line-height: 50%;
+}
+#logo-wrapper .sub {
+    font-family: var(--font-fredoka, sans-serif);
+    font-size: 1em;
+    line-height: 50%;
+    font-weight: normal;
+    color: var(--electric, dodgerblue);
+}
+
+/* Letter displacement */
+.letter {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+#logo-wrapper:hover .n-letter {
+    transform: translateY(-0.12em);
+}
+</style>

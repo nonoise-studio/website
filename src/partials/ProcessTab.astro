@@ -1,0 +1,69 @@
+---
+import BeforeAfterSlider from '../components/BeforeAfterSlider.astro';
+---
+<BeforeAfterSlider>
+    <Fragment slot="before">
+        <svg class="ill" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="25" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Request</text>
+            <line x1="50" y1="19" x2="60" y2="19" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="60" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="85" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Validate</text>
+            <line x1="110" y1="19" x2="120" y2="19" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="120" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="#d4a017" stroke-width="0.5"/>
+            <text x="145" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Check A</text>
+            <line x1="170" y1="19" x2="180" y2="19" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="180" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="#c0392b" stroke-width="0.5"/>
+            <text x="205" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Approve?</text>
+            <line x1="205" y1="28" x2="205" y2="42" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="180" y="42" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="205" y="54" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Check B</text>
+            <line x1="230" y1="19" x2="240" y2="19" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="240" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="#2980b9" stroke-width="0.5"/>
+            <text x="265" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Review</text>
+            <line x1="265" y1="28" x2="265" y2="42" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="240" y="42" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="265" y="54" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Escalate?</text>
+            <line x1="290" y1="19" x2="300" y2="19" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="300" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="#8e44ad" stroke-width="0.5"/>
+            <text x="325" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Check C</text>
+            <line x1="350" y1="19" x2="360" y2="19" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="360" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="385" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Notify</text>
+            <line x1="385" y1="28" x2="385" y2="42" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="360" y="42" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="385" y="54" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Re-check</text>
+            <line x1="410" y1="51" x2="120" y2="51" stroke="#c0392b" stroke-width="0.5" stroke-dasharray="3,2"/>
+            <line x1="120" y1="51" x2="120" y2="28" stroke="#c0392b" stroke-width="0.5" stroke-dasharray="3,2"/>
+            <line x1="410" y1="19" x2="420" y2="19" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="420" y="10" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="445" y="22" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Archive</text>
+            <line x1="445" y1="28" x2="445" y2="72" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+            <rect x="420" y="72" width="50" height="18" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="445" y="84" font-size="7" text-anchor="middle" fill="var(--color-text-secondary)" font-family="var(--font-sans)">Done?</text>
+            <text x="0" y="108" font-size="7" fill="#c0392b" font-family="var(--font-sans)">⚠ Step 4 duplicates Step 2</text>
+            <text x="0" y="120" font-size="7" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">* legacy requirement — do not remove</text>
+            <text x="0" y="132" font-size="7" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">* see confluence page (link broken)</text>
+            <text x="0" y="144" font-size="7" fill="var(--color-text-tertiary)" font-family="var(--font-sans)">* ask Jan — Jan left in 2021</text>
+        </svg>
+    </Fragment>
+    <Fragment slot="after">
+        <svg class="ill" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="60" width="70" height="28" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="55" y="77" font-size="9" text-anchor="middle" font-weight="500" fill="var(--color-text-primary)" font-family="var(--font-sans)">Receive</text>
+            <line x1="90" y1="74" x2="120" y2="74" stroke="var(--color-border-secondary)" stroke-width="1"/>
+            <rect x="120" y="60" width="70" height="28" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="155" y="77" font-size="9" text-anchor="middle" font-weight="500" fill="var(--color-text-primary)" font-family="var(--font-sans)">Validate</text>
+            <line x1="190" y1="74" x2="220" y2="74" stroke="var(--color-border-secondary)" stroke-width="1"/>
+            <rect x="220" y="60" width="70" height="28" rx="4" fill="var(--color-background-secondary)" stroke="var(--electric)" stroke-width="1"/>
+            <text x="255" y="77" font-size="9" text-anchor="middle" font-weight="500" fill="var(--color-text-primary)" font-family="var(--font-sans)">Approve</text>
+            <line x1="290" y1="74" x2="320" y2="74" stroke="var(--color-border-secondary)" stroke-width="1"/>
+            <rect x="320" y="60" width="70" height="28" rx="4" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+            <text x="355" y="77" font-size="9" text-anchor="middle" font-weight="500" fill="var(--color-text-primary)" font-family="var(--font-sans)">Deliver</text>
+            <line x1="390" y1="74" x2="420" y2="74" stroke="var(--color-border-secondary)" stroke-width="1"/>
+            <rect x="420" y="60" width="70" height="28" rx="4" fill="var(--electric)" stroke="none"/>
+            <text x="455" y="77" font-size="9" text-anchor="middle" font-weight="500" fill="white" font-family="var(--font-sans)">Done</text>
+            <text x="280" y="130" font-size="13" font-weight="500" text-anchor="middle" fill="var(--electric)" font-family="var(--font-sans)">Every step has a reason.</text>
+        </svg>
+    </Fragment>
+</BeforeAfterSlider>
