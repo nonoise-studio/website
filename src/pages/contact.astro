@@ -1,32 +1,80 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import BaseHead from '../components/BaseHead.astro';
-import Layout from '../layouts/BlogPost.astro';
+import Page from '../layouts/Page.astro';
 ---
 
-<BaseHead title="Contact" description="Get in touch with nonoise studio."/>
-<Layout
-	title="Contact"
-	description="Get in touch with nonoise studio."
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	  <h1>Contact Us</h1>
-  <form action="https://web3forms.com/access_key" method="POST">
-    <input type="hidden" name="from_name" value="Website Contact Form" />
-    
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" required />
-    
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required />
-    
-    <label for="message">Message</label>
-    <textarea name="message" id="message" rows="5" required></textarea>
-    
-    <!-- Honeypot for spam protection -->
-    <input type="text" name="honeypot" style="display:none" />
-    
-    <button type="submit">Send Message</button>
-  </form>
-</Layout>
+<Page title="Contact · nonoise" description="Get in touch with nonoise studio.">
+	<section class="contact-page">
+		<h1>Contact</h1>
+		<p>Tell me what is noisy. I’ll tell you if I can help.</p>
+
+		<form action="https://formsubmit.co/hello@nonoisestudio.nl" method="POST">
+			<input type="hidden" name="_subject" value="nonoise website contact" />
+			<input type="hidden" name="_captcha" value="false" />
+			<input type="text" name="_honey" style="display:none" />
+
+			<label for="name">Name</label>
+			<input type="text" name="name" id="name" required />
+
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email" required />
+
+			<label for="message">Message</label>
+			<textarea name="message" id="message" rows="5" required></textarea>
+
+			<button type="submit">Send</button>
+		</form>
+
+		<p class="alt">
+			Or write directly:
+			<a href="mailto:hello@nonoisestudio.nl">hello@nonoisestudio.nl</a>
+		</p>
+	</section>
+</Page>
+
+<style>
+	.contact-page {
+		max-width: 32rem;
+	}
+
+	h1 {
+		font-family: var(--font-bitcount, monospace);
+		font-weight: 400;
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		margin: 2rem 0;
+	}
+
+	input,
+	textarea {
+		font-family: inherit;
+		padding: 0.6em 0.8em;
+		border: 1px solid color-mix(in srgb, var(--obsidian) 20%, transparent);
+		border-radius: 4px;
+		background: white;
+		margin-bottom: 0.8rem;
+	}
+
+	button {
+		align-self: flex-start;
+		padding: 0.75em 1.5em;
+		border: 2px solid var(--electric);
+		background: transparent;
+		color: var(--electric);
+		font-family: var(--font-fredoka, sans-serif);
+		font-size: 1.1rem;
+		cursor: pointer;
+	}
+
+	button:hover {
+		background: var(--electric);
+		color: white;
+	}
+
+	.alt a {
+		color: var(--electric);
+	}
+</style>

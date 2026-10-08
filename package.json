@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "nonoise-website",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -13,9 +13,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
-    "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/starlight": "^0.39.2",
     "astro": "^6.3.1",
     "sharp": "^0.34.3"
   }

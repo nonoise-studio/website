@@ -1,0 +1,53 @@
+---
+import ServiceCard from './ServiceCard.astro';
+
+const services = [
+	{
+		tag: 'Data',
+		title: 'From numbers to decisions',
+		desc: 'Dashboards and models you can actually act on.',
+	},
+	{
+		tag: 'Process',
+		title: 'See how the work really flows',
+		desc: 'Cut redundant steps so the useful work has room.',
+	},
+	{
+		tag: 'Automation',
+		title: 'Stop being the glue',
+		desc: 'Connect tools and skip the copy-paste.',
+	},
+	{
+		tag: 'Gamification',
+		title: 'Make complexity playable',
+		desc: 'Serious games and interactive briefings instead of another slide deck.',
+	},
+];
+---
+
+<section id="services">
+	<h2>What I do</h2>
+	<div class="grid">
+		{services.map((s) => <ServiceCard tag={s.tag} title={s.title} desc={s.desc} />)}
+	</div>
+</section>
+
+<style>
+	#services {
+		padding: 4rem 0 1rem;
+	}
+
+	h2 {
+		font-family: var(--font-bitcount, monospace);
+		font-size: 1.8rem;
+		font-weight: 500;
+		color: var(--electric);
+		margin-bottom: 1.5rem;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		gap: 1rem;
+	}
+</style>

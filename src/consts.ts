@@ -1,5 +1,3 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
-
-export const SITE_TITLE = 'nonoise';
-export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const SITE_TITLE = 'nonoise studio';
+export const SITE_DESCRIPTION =
+	'Freelance studio in Rotterdam. Data, process, automation, and gamification — without the noise.';
