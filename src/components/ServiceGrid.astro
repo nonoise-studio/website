@@ -1,36 +1,236 @@
+astro
 ---
-import ServiceCard from './ServiceCard.astro';
+import { Icon } from 'astro-icon/components';
 
-const services = [
+const items = [
 	{
-		tag: 'Data',
-		title: 'From numbers to decisions',
-		desc: 'Dashboards and models you can actually act on.',
+		key: 'data',
+		label: 'data analysis',
+		icon: 'mdi:chart-line',
+		explanation:
+			'Turn business data into something you can actually act on. Find the patterns, problems and opportunities hidden in the numbers, and make them easier to understand.',
+		keywords: ['Power BI', 'Data Modelling'],
 	},
 	{
-		tag: 'Process',
-		title: 'See how the work really flows',
-		desc: 'Cut redundant steps so the useful work has room.',
+		key: 'nonsense',
+		label: 'no nonsense',
+		icon: 'mdi:bullseye-arrow',
+		explanation:
+			'No nonsense. Curious. Technical. Independent. Gets shit done fast.',
+		keywords: [],
 	},
 	{
-		tag: 'Automation',
-		title: 'Stop being the glue',
-		desc: 'Connect tools and skip the copy-paste.',
+		key: 'technology',
+		label: 'technology',
+		icon: 'mdi:chip',
+		explanation:
+			'Build practical digital solutions around the problem, not the other way around. Use the right tools to solve real problems and make things work better.',
+		keywords: [
+			'Bespoke Digital Tools',
+			'API & Service Integration',
+		],
 	},
 	{
-		tag: 'Gamification',
-		title: 'Make complexity playable',
-		desc: 'Serious games and interactive briefings instead of another slide deck.',
+		key: 'systems',
+		label: 'systems',
+		icon: 'mdi:graph-outline',
+		explanation:
+			'Understand how your business, people, processes and technology fit together. Look at the bigger picture to find where things connect and where things could work better.',
+		keywords: ['Systems Thinking', 'Digital Infrastructure'],
+	},
+	{
+		key: 'ai',
+		label: 'responsible use of AI',
+		icon: 'mdi:robot-outline',
+		explanation:
+			'Find where AI can genuinely improve the way you work. Focus on useful applications that solve real problems, rather than using AI simply because it is available.',
+		keywords: ['AI Automation', 'Custom AI Pipelines'],
+	},
+	{
+		key: 'processes',
+		label: 'processes',
+		icon: 'mdi:workflow',
+		explanation:
+			'Find the friction, remove the unnecessary, improve the flow. Make repetitive work simpler and give people more time to focus on what actually needs them.',
+		keywords: ['RPA', 'Workflow Automation'],
+	},
+	{
+		key: 'strategy',
+		label: 'strategic plans',
+		icon: 'mdi:map-marker-path',
+		explanation:
+			'Turn ideas and uncertainty into a direction you can actually act on. Understand the situation, explore the opportunities, and work out what makes sense to do next.',
+		keywords: ['Business Model Canvas', 'Market Research'],
 	},
 ];
+
+const allKeywords = [...new Set(items.flatMap((item) => item.keywords ?? []))];
 ---
 
 <section id="services">
 	<h2>What I do</h2>
-	<div class="grid">
-		{services.map((s) => <ServiceCard tag={s.tag} title={s.title} desc={s.desc} />)}
+
+	<div class="text-block">
+		Nonoise Studio is a Rotterdam-based,
+		<button
+			class="interactive-text active"
+			type="button"
+			data-key="nonsense"
+			aria-expanded="true"
+			aria-controls="explanation-nonsense"
+		>
+			no nonsense
+		</button>
+		digital studio, passionate about
+		<button
+			class="interactive-text"
+			type="button"
+			data-key="technology"
+			aria-expanded="false"
+			aria-controls="explanation-technology"
+		>
+			technology
+		</button>
+		and
+		<button
+			class="interactive-text"
+			type="button"
+			data-key="systems"
+			aria-expanded="false"
+			aria-controls="explanation-systems"
+		>
+			systems
+		</button>.
+		I help businesses with
+		<button
+			class="interactive-text"
+			type="button"
+			data-key="data"
+			aria-expanded="false"
+			aria-controls="explanation-data"
+		>
+			data analysis
+		</button>,
+		explore the
+		<button
+			class="interactive-text"
+			type="button"
+			data-key="ai"
+			aria-expanded="false"
+			aria-controls="explanation-ai"
+		>
+			responsible use of AI
+		</button>,
+		understand and improve their
+		<button
+			class="interactive-text"
+			type="button"
+			data-key="processes"
+			aria-expanded="false"
+			aria-controls="explanation-processes"
+		>
+			processes
+		</button>,
+		and develop
+		<button
+			class="interactive-text"
+			type="button"
+			data-key="strategy"
+			aria-expanded="false"
+			aria-controls="explanation-strategy"
+		>
+			strategic plans
+		</button>.
+	</div>
+
+	<div class="explanations">
+		{items.map((item) => (
+			<div
+				id={`explanation-${item.key}`}
+				class:list={['explanation-container', { active: item.key === 'nonsense' }]}
+				data-key={item.key}
+				aria-hidden={item.key !== 'nonsense'}
+			>
+				<div class="explanation-box">
+					<div class="explanation-header">
+						<Icon name={item.icon} size={18} class="header-icon" />
+						<h3 class="explanation-title">{item.label}</h3>
+					</div>
+
+					<p class="explanation">{item.explanation}</p>
+				</div>
+			</div>
+		))}
+	</div>
+
+	<div class="keywords" aria-label="Capabilities">
+		{allKeywords.map((keyword) => (
+			<span class="keyword" data-keyword={keyword}>{keyword}</span>
+		))}
 	</div>
 </section>
+
+<script define:vars={{ items }}>
+	const buttons = document.querySelectorAll('.interactive-text');
+	const explanations = document.querySelectorAll('.explanation-container');
+	const keywords = document.querySelectorAll('.keyword');
+
+	const keywordMap = Object.fromEntries(
+		items.map((item) => [item.key, item.keywords ?? []])
+	);
+
+	function updateKeywords(key) {
+		const selected = keywordMap[key] ?? [];
+
+		keywords.forEach((keyword) => {
+			const value = keyword.dataset.keyword ?? '';
+			const highlighted =
+				selected.length === 0 || selected.includes(value);
+
+			keyword.classList.toggle('highlighted', highlighted);
+		});
+	}
+
+	updateKeywords('nonsense');
+
+	buttons.forEach((button) => {
+		button.addEventListener('click', () => {
+			const key = button.dataset.key;
+			if (!key) return;
+
+			const isActive = button.classList.contains('active');
+
+			buttons.forEach((item) => {
+				item.classList.remove('active');
+				item.setAttribute('aria-expanded', 'false');
+			});
+
+			explanations.forEach((explanation) => {
+				explanation.classList.remove('active');
+				explanation.setAttribute('aria-hidden', 'true');
+			});
+
+			if (isActive) {
+				updateKeywords('nonsense');
+				return;
+			}
+
+			const explanation = document.querySelector(
+				`.explanation-container[data-key="${key}"]`
+			);
+
+			if (!explanation) return;
+
+			button.classList.add('active');
+			button.setAttribute('aria-expanded', 'true');
+
+			explanation.classList.add('active');
+			explanation.setAttribute('aria-hidden', 'false');
+
+			updateKeywords(key);
+		});
+	});
+</script>
 
 <style>
 	#services {
@@ -45,9 +245,157 @@ const services = [
 		margin-bottom: 1.5rem;
 	}
 
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-		gap: 1rem;
+	.text-block {
+		font-size: 1.25rem;
+		line-height: 1.8;
+		color: color-mix(in srgb, var(--obsidian) 85%, var(--peach));
+	}
+
+	.interactive-text {
+		font: inherit;
+		font-family: var(--font-bitcount, monospace);
+		font-weight: 500;
+		color: var(--terra);
+		text-decoration: underline;
+		text-decoration-color: var(--terra);
+		text-underline-offset: 3px;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		padding: 0.1em 0.3em;
+		border: 0;
+		background: transparent;
+		border-radius: 3px;
+	}
+
+	.interactive-text:hover {
+		color: var(--electric);
+		text-decoration-color: var(--electric);
+	}
+
+	.interactive-text.active {
+		background: var(--terra);
+		color: var(--peach);
+		text-decoration: none;
+	}
+
+	.explanations {
+		margin-top: 1.5rem;
+	}
+
+	.explanation-container {
+		display: none;
+	}
+
+	.explanation-container.active {
+		display: block;
+		animation: explanation-in 0.3s ease-out;
+	}
+
+	.explanation-box {
+		overflow: hidden;
+		background: var(--peach);
+		border: 1px solid color-mix(in srgb, var(--obsidian) 15%, transparent);
+		border-radius: 8px;
+		padding: 1.5rem;
+	}
+
+	@keyframes explanation-in {
+		from {
+			opacity: 0;
+			transform: translateY(-6px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.explanation-header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.6rem;
+		margin-bottom: 1rem;
+	}
+
+	.explanation-header .header-icon {
+		display: block;
+		flex: 0 0 auto;
+		width: 20px;
+		height: 20px;
+		color: var(--terra);
+	}
+
+	.explanation-title {
+		display: block;
+		margin: 0;
+		padding: 0;
+		font-family: var(--font-bitcount, monospace);
+		font-size: 1.3rem;
+		font-weight: 500;
+		line-height: 1.1;
+		color: var(--terra);
+		text-transform: lowercase;
+	}
+
+	.explanation {
+		font-size: 1.1rem;
+		line-height: 1.6;
+		color: color-mix(in srgb, var(--obsidian) 75%, var(--peach));
+		margin: 0;
+	}
+
+	.keywords {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1.25rem;
+	}
+
+	.keyword {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.3rem 0.65rem;
+		border: 1px solid color-mix(in srgb, var(--terra) 45%, transparent);
+		border-radius: 999px;
+		font-family: var(--font-fredoka, monospace);
+		font-size: 1rem;
+		line-height: 1.2;
+
+		transition:
+			color 0.2s ease,
+			background 0.2s ease,
+			border-color 0.2s ease,
+			opacity 0.2s ease,
+			transform 0.2s ease;
+		
+		/* Not highlighted */
+		color: var(--terra);
+		background: color-mix(in srgb, var(--terra) 12%, transparent);
+		border-color: var(--terra);
+		opacity: 0.7;
+	}
+
+	.keyword.highlighted {
+		color: var(--peach);
+		background: color-mix(in srgb, var(--terra) 80%, transparent);
+		border-color: var(--terra);
+		font-weight: 500;
+		opacity: 1;
+	}
+
+	@media (max-width: 720px) {
+		.text-block {
+			font-size: 1.1rem;
+		}
+
+		.explanation-box {
+			padding: 1.25rem;
+		}
+
+		.explanation {
+			font-size: 1rem;
+		}
 	}
 </style>

@@ -1,0 +1,182 @@
+---
+import Page from '../layouts/Page.astro';
+---
+
+<Page
+	title="About · nonoise"
+	description="About nonoise studio and the person behind it."
+>
+	<section class="about-page">
+		<header class="about-intro">
+			<h1>About</h1>
+            <div class="about-photo">
+                <img
+                    src="https://avatars.githubusercontent.com/u/50365584?v=4&size=600"
+                    alt="That's me!"
+                />
+            </div>
+			<p class="lead">
+				I like understanding how things work, taking them apart, and
+				figuring out how they could work better.
+			</p>
+		</header>
+
+		<div class="about-content">
+			<p>
+				I'm Thomas. I'm an
+				<span class="keyword">engineer</span> by training, with a
+				background in <span class="keyword">Urbanism</span> and
+				<span class="keyword">Industrial Design</span>.
+			</p>
+
+			<p>
+				I've always been interested in how things fit together. Systems,
+				objects, organisations, cities, businesses. I'll happily pull
+				something apart just to understand why it works the way it does.
+			</p>
+
+			<p>
+				That curiosity eventually found its way into
+				<span class="keyword">data and digital tools</span>. Data is
+				particularly interesting because it lets you look underneath the
+				surface. You can see patterns, test assumptions, find
+				vulnerabilities and discover things that aren't immediately
+				obvious.
+			</p>
+
+			<p>
+				But I also like
+				<span class="keyword">design</span>. Not just making things look
+				good, but thinking about what something should be, why it should
+				work, and how people will actually use it.
+			</p>
+
+			<p>
+				That kind of conceptual design is surprisingly close to
+				<span class="keyword">business modelling</span>. Understand the
+				world around you, spot an opportunity, and figure out how you
+				could build something around it that actually works.
+			</p>
+
+            <h2>Why nonoise?</h2>
+
+            <p>
+                As a curious person, driven to understand how things work, I like to
+                get close to the problem. I want to understand what is really going
+                on, and what would make it better. That means asking questions,
+                looking at the details, and being willing to rethink the obvious
+                answer.
+            </p>
+
+            <p>
+                In that process, I like to focus on what actually matters.
+                <span class="keyword">Cut through the crap.</span>
+                Strip away the unnecessary. Get to the point.
+            </p>
+
+            <p>
+                I'm quite happy to <span class="keyword">question things, challenge assumptions and speak up</span>
+                when I think something could be better. Not because I always have the
+                right answer, but because not questioning it
+                is rarely going to make it better.
+            </p>
+
+            <p>
+                For me, that's about cutting through the noise. Removing the
+                unnecessary, finding what actually matters, and focusing on what is
+                useful.
+            </p>
+
+            <p>
+                <span class="slogan">nonoise no nonsense.</span>
+            </p>
+		</div>
+	</section>
+</Page>
+
+<style>
+	.about-page {
+		max-width: 48rem;
+	}
+
+    .about-intro {
+        margin-bottom: 6rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 14rem;
+        grid-template-areas:
+            "title photo"
+            "lead photo";
+        column-gap: 4rem;
+        row-gap: 1.5rem;
+        align-items: center;
+    }
+
+    .about-intro h1 {
+        grid-area: title;
+        margin: 0;
+    }
+
+    .about-intro .lead {
+        grid-area: lead;
+    }
+
+    .about-photo {
+        grid-area: photo;
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .about-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+	h1 {
+		margin: 0 0 1.5rem;
+		font-family: var(--font-bitcount, monospace);
+		font-weight: 400;
+	}
+
+	.lead {
+		max-width: 42rem;
+		margin: 0;
+		font-size: clamp(1.5rem, 3vw, 2.25rem);
+		line-height: 1.25;
+	}
+
+
+	.about-content {
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+
+	.about-content p {
+		margin: 0 0 1.75rem;
+	}
+
+	.keyword {
+		color: var(--electric);
+	}
+
+    .slogan {
+        font-family: var(--font-bitcount, monospace);
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        line-height: 1.25;
+        color: var(--electric);
+        text-align: center;
+        display: block;
+    }
+
+	h2 {
+		margin: 5rem 0 1.5rem;
+		font-family: var(--font-bitcount, monospace);
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		font-weight: 400;
+		line-height: 1;
+		color: var(--electric);
+	}
+</style>

@@ -5,29 +5,21 @@ import Page from '../layouts/Page.astro';
 <Page title="Contact · nonoise" description="Get in touch with nonoise studio.">
 	<section class="contact-page">
 		<h1>Contact</h1>
-		<p>Tell me what is noisy. I’ll tell you if I can help.</p>
+		<p>Get in touch with me!</p>
 
-		<form action="https://formsubmit.co/hello@nonoisestudio.nl" method="POST">
-			<input type="hidden" name="_subject" value="nonoise website contact" />
-			<input type="hidden" name="_captcha" value="false" />
-			<input type="text" name="_honey" style="display:none" />
+		<div class="contact-links">
+			<a href="mailto:changeme@example.com">changeme@example.com</a>
+			<a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+		</div>
 
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name" required />
+		<div class="business-details">
 
-			<label for="email">Email</label>
-			<input type="email" name="email" id="email" required />
-
-			<label for="message">Message</label>
-			<textarea name="message" id="message" rows="5" required></textarea>
-
-			<button type="submit">Send</button>
-		</form>
-
-		<p class="alt">
-			Or write directly:
-			<a href="mailto:hello@nonoisestudio.nl">hello@nonoisestudio.nl</a>
-		</p>
+			<div class="details">
+					<strong>Nonoise Studio</strong>
+					<span>3024 EZ, Rotterdam</span>
+					<span>KvK: 42054113</span>
+			</div>
+		</div>
 	</section>
 </Page>
 
@@ -41,40 +33,62 @@ import Page from '../layouts/Page.astro';
 		font-weight: 400;
 	}
 
-	form {
+	.contact-links {
 		display: flex;
-		flex-direction: column;
-		gap: 0.4rem;
-		margin: 2rem 0;
+		gap: 2rem;
+		margin-top: 2rem;
 	}
 
-	input,
-	textarea {
-		font-family: inherit;
-		padding: 0.6em 0.8em;
-		border: 1px solid color-mix(in srgb, var(--obsidian) 20%, transparent);
-		border-radius: 4px;
-		background: white;
-		margin-bottom: 0.8rem;
-	}
-
-	button {
-		align-self: flex-start;
-		padding: 0.75em 1.5em;
-		border: 2px solid var(--electric);
-		background: transparent;
+	.contact-links a {
 		color: var(--electric);
-		font-family: var(--font-fredoka, sans-serif);
-		font-size: 1.1rem;
-		cursor: pointer;
+		text-decoration: none;
+		border-bottom: 1px solid var(--electric);
 	}
 
-	button:hover {
+	.contact-links a:hover {
 		background: var(--electric);
 		color: white;
 	}
 
-	.alt a {
-		color: var(--electric);
+	.business-details {
+		margin-top: 5rem;
+	}
+
+	.details {
+		display: flex;
+		flex-direction: column;
+		gap: 0em;
+	}
+
+	.details > * {
+		margin: 0;
+		line-height: 1.5;
+	}
+
+	.details span {
+		width: 8rem;
+		flex-shrink: 0;
+		text-wrap: nowrap;
+		color: color-mix(
+			in srgb,
+			var(--obsidian) 55%,
+			var(--peach)
+		);
+	}
+
+	.details strong {
+		font-weight: 400;
+	}
+
+	@media (max-width: 500px) {
+		.details > div {
+			display: block;
+		}
+
+		.details span {
+			display: block;
+			width: auto;
+			margin-bottom: 0.2rem;
+		}
 	}
 </style>

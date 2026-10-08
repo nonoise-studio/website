@@ -2,10 +2,33 @@
 import Page from '../layouts/Page.astro';
 import DotBanner from '../components/branding/DotBanner.astro';
 import ServiceGrid from '../components/ServiceGrid.astro';
+import Method from '../components/Method.astro';
+import ClientBanner from '../components/ClientBanner.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+const clients = [
+	{
+		name: 'Attenza',
+		website: 'https://attenza.nl/',
+		logo: 'https://www.attenza.nl/wp/wp-content/uploads/2021/11/Logo.png',
+	},
+	// {
+	// 	name: 'Placeholder',
+	// 	website: 'https://placeholder.com/',
+	// 	logo: 'https://imgs.search.brave.com/p90nca8FKVz9jxlEuGEOkZfkGJ9brr9Ns35dTqcsDnk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wODIv/MzQwLzg3NS9zbWFs/bC9tdWx0aWNvbG9y/ZWQtYnVzaW5lc3Mt/bG9nby13aXRoLXN0/YWNrZWQtbGF5ZXJz/LWFuZC10ZXh0LXBs/YWNlaG9sZGVyLXZl/Y3Rvci5qcGc',
+	// }
+];
 ---
 
 <Page title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<div style="margin-block: 2rem; width: 100vw; margin-left: calc(50% - 50vw);">
+		<DotBanner
+			words={[' nonoise no nonsense ']}
+			direction="left"
+			speed={40}
+			hoverEffect={false}
+		/>
+	</div>
 	<section id="hero">
 		<span class="hero-logo">nonoise</span>
 		<h1>
@@ -18,41 +41,44 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				chaos to clarity
 			</span>
 		</h1>
-		<a href="#contact" class="cta">Let's fix it →</a>
+		<a href="/contact" class="cta">Let's fix it →</a>
 	</section>
 
-	<DotBanner
-		words={['data', 'process', 'automation', 'gamification']}
-		direction="left"
-		speed={40}
-		hoverEffect={false}
-	/>
-
-	<ServiceGrid />
-
-	<section id="how">
-		<h2>How we work</h2>
+	<div style="margin-block: 2rem; width: 100vw; margin-left: calc(50% - 50vw);">
 		<DotBanner
-			words={['no nonsense', 'no decorum', 'no noise']}
-			direction="right"
-			speed={30}
+			words={[' nonoise no nonsense ']}
+			direction="left"
+			speed={40}
 			hoverEffect={false}
 		/>
-		<ul>
-			<li>No decks for the sake of decks.</li>
-			<li>No meetings for the sake of meetings.</li>
-			<li>No jargon to sound smart.</li>
-			<li>Just the problem, the solution, and the result.</li>
-		</ul>
+	</div>
+	<section id="services">
+		<ServiceGrid />
 	</section>
 
+	<!-- Clients banner. Only show if there are multiple clients -->
+	{clients.length > 1 &&
+	<div class="client-logos-container full-width-banner">
+		<DotBanner
+			words={[' trusted by ']}
+			direction="left"
+			speed={50}
+			hoverEffect={false}
+		/>
+		<ClientBanner clients={clients} direction="right" speed={20} />
+		<DotBanner
+			words={[' trusted by ']}
+			direction="left"
+			speed={70}
+			hoverEffect={false}
+		/>
+	</div>
+	}
+
+	<Method />
+
 	<section id="contact">
-		<h2>Enough talk.</h2>
-		<p>Rotterdam, NL. Freelance, one person, no noise.</p>
-		<div class="contact-links">
-			<a href="mailto:hello@nonoisestudio.nl">hello@nonoisestudio.nl</a>
-			<a href="/contact">Contact form</a>
-		</div>
+		<a class="cta" href="/contact">Get in touch →</a>
 	</section>
 </Page>
 
@@ -92,6 +118,14 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 </script>
 
 <style>
+	
+	h2 {
+		font-family: var(--font-bitcount, monospace);
+		font-size: 1.8rem;
+		color: var(--electric);
+		font-weight: 500;
+		margin: 4rem 0 1rem;
+	}
 	#hero {
 		display: flex;
 		flex-direction: column;
@@ -121,6 +155,13 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		display: block;
 	}
 
+	.client-logos-container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin: 4rem 0;
+	}
+
 	.cta {
 		display: inline-block;
 		align-self: flex-start;
@@ -139,7 +180,11 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		color: white;
 	}
 
-	#how,
+	.full-width-banner {
+		width: 100vw;
+		margin-left: calc(50% - 50vw);
+	}
+
 	#contact {
 		margin: 4rem 0;
 		display: flex;
@@ -147,39 +192,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		gap: 1.5rem;
 	}
 
-	#how h2,
 	#contact h2 {
 		font-family: var(--font-bitcount, monospace);
 		font-size: 1.8rem;
 	}
 
-	#how ul {
-		list-style: none;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-	}
-
-	#how ul li::before {
-		content: '— ';
-		color: var(--electric);
-	}
-
-	.contact-links {
-		display: flex;
-		gap: 2rem;
-		flex-wrap: wrap;
-	}
-
-	.contact-links a {
-		color: var(--electric);
-		text-decoration: none;
-		border-bottom: 1px solid var(--electric);
-	}
-
-	.contact-links a:hover {
-		background: var(--electric);
-		color: white;
-	}
 </style>

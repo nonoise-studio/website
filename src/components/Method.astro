@@ -1,0 +1,410 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const steps = [
+  {
+    title: 'Assess',
+    desc: 'Step back and understand how the business works, what is getting in the way, and what the problem is really about.',
+    icon: 'mdi:magnify',
+  },
+  {
+    title: 'Assemble',
+    desc: 'Gather the right information, identify the opportunities, and build a practical plan to move forward.',
+    icon: 'mdi:puzzle-outline',
+  },
+  {
+    title: 'Act',
+    desc: 'Put the plan into practice, building and implementing what is needed to make things better.',
+    icon: 'mdi:rocket-launch-outline',
+  },
+  {
+    title: 'Again!',
+    desc: 'Measure what changed, learn from it, and start the process again when there is more to improve.',
+    icon: 'mdi:refresh',
+  },
+];
+---
+
+<section id="method">
+  <div class="method">
+    <h2>The Method</h2>
+
+    <div class="method-track">
+      <div class="method-line">
+        <div class="method-progress"></div>
+      </div>
+
+      {
+        steps.map((step) => (
+          <div class="method-step" data-step>
+            <div class="method-icon">
+              <Icon name={step.icon} />
+            </div>
+
+            <div class="method-content">
+              <h3>{step.title}</h3>
+              <p>{step.desc}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const method = document.querySelector<HTMLElement>('#method');
+  const methodVisual = document.querySelector<HTMLElement>('.method');
+  const steps = document.querySelectorAll<HTMLElement>('[data-step]');
+  const progress = document.querySelector<HTMLElement>('.method-progress');
+
+  if (method && methodVisual && steps.length && progress) {
+    let currentStep = 0;
+    let lastWheelTime = 0;
+
+    const updateHeight = () => {
+      const visualHeight = methodVisual.getBoundingClientRect().height;
+      const viewportHeight = window.innerHeight;
+
+      const scrollDistance =
+        visualHeight * steps.length * 0.875;
+
+      method.style.height =
+        `${scrollDistance + viewportHeight}px`;
+    };
+
+    const update = () => {
+      const rect = method.getBoundingClientRect();
+      const scrollDistance =
+        method.offsetHeight - window.innerHeight;
+
+      const scrolled = Math.max(0, -rect.top);
+
+      const progressAmount =
+        scrollDistance > 0
+          ? Math.min(scrolled / scrollDistance, 1)
+          : 0;
+
+      const activeIndex = Math.min(
+        Math.floor(progressAmount * steps.length),
+        steps.length - 1
+      );
+
+      currentStep = activeIndex;
+
+      steps.forEach((step, index) => {
+        step.classList.toggle(
+          'active',
+          index === activeIndex
+        );
+      });
+
+      const lineProgress =
+	  	(activeIndex == steps.length - 1) ? 1 :
+        (activeIndex + 0.5) / steps.length;
+
+      progress.style.height =
+        `${lineProgress * 100}%`;
+    };
+
+    const updateAll = () => {
+      updateHeight();
+      update();
+    };
+
+	const goToStep = (index) => {
+	currentStep = Math.max(
+		0,
+		Math.min(index, steps.length - 1)
+	);
+
+	const rect = method.getBoundingClientRect();
+	const sectionTop = rect.top + window.scrollY;
+
+	const scrollDistance =
+		method.offsetHeight - window.innerHeight;
+
+	const progress =
+		steps.length > 1
+		? currentStep / (steps.length - 1)
+		: 0;
+
+	window.scrollTo({
+		top: sectionTop + scrollDistance * progress,
+		behavior: 'smooth',
+	});
+	};
+
+    updateAll();
+
+    window.addEventListener(
+      'scroll',
+      update,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      'resize',
+      updateAll
+    );
+
+    window.addEventListener(
+      'wheel',
+      (event) => {
+        const rect = method.getBoundingClientRect();
+
+        const isPinned =
+          rect.top <= 1 &&
+          rect.bottom >= window.innerHeight - 1;
+
+        if (!isPinned) return;
+
+        if (Math.abs(event.deltaY) < 2) return;
+
+        const now = performance.now();
+
+        if (now - lastWheelTime < 350) {
+          event.preventDefault();
+          return;
+        }
+
+        const direction =
+          event.deltaY > 0 ? 1 : -1;
+
+        const nextStep =
+          currentStep + direction;
+
+        if (nextStep >= steps.length) {
+          return;
+        }
+
+        if (nextStep < 0) {
+          return;
+        }
+
+        event.preventDefault();
+
+        lastWheelTime = now;
+
+        goToStep(nextStep);
+      },
+      { passive: false }
+    );
+
+    steps.forEach((step, index) => {
+      step.addEventListener('click', () => {
+        goToStep(index);
+      });
+    });
+  }
+</script>
+
+<style>
+  #method {
+    position: relative;
+    margin: 6rem 0;
+  }
+
+  .method {
+    position: sticky;
+    top: 4rem;
+
+    min-height: calc(100vh - 4rem);
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 4rem 0;
+  }
+
+  h2 {
+    margin: 0 0 4rem;
+
+    font-family: var(--font-bitcount, monospace);
+    font-size: 1.5rem;
+    font-weight: 500;
+
+    color: var(--electric);
+  }
+
+.method-track {
+  position: relative;
+
+  flex: 1;
+  min-height: 36rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+  .method-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 4rem;
+
+    width: 2px;
+
+    background: color-mix(
+      in srgb,
+      var(--obsidian) 12%,
+      transparent
+    );
+
+    overflow: hidden;
+  }
+
+  .method-progress {
+    width: 100%;
+    height: 0;
+
+    background: var(--electric);
+
+    transition: height 0.35s ease;
+  }
+
+  .method-step {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 4rem 2px minmax(0, 48rem);
+    column-gap: 1.5rem;
+
+    opacity: 0.2;
+
+    transition: opacity 0.4s ease;
+
+    cursor: pointer;
+  }
+
+  .method-step.active {
+    opacity: 1;
+  }
+
+  .method-icon {
+    grid-column: 1;
+    grid-row: 1;
+
+    width: 3rem;
+    height: 3rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--electric);
+    opacity: 0.35;
+
+    transition:
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+
+  .method-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .method-step.active .method-icon {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  .method-content {
+    grid-column: 3;
+    grid-row: 1;
+
+    max-width: 48rem;
+  }
+
+  .method-step h3 {
+    margin: 0 0 0.5rem;
+
+    font-family: var(--font-bitcount, monospace);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1;
+
+    color: var(--electric);
+  }
+
+  .method-step p {
+    max-width: 42rem;
+    margin: 0;
+
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.5;
+
+    color: color-mix(
+      in srgb,
+      var(--obsidian) 75%,
+      var(--peach)
+    );
+  }
+
+  @media (max-width: 850px) {
+    .method-step {
+      grid-template-columns: 3rem 2px minmax(0, 1fr);
+      column-gap: 1rem;
+    }
+
+    .method-line {
+      left: 3rem;
+    }
+
+    .method-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .method {
+      min-height: 100vh;
+      padding: 4rem 0;
+    }
+
+    h2 {
+      margin-bottom: 3rem;
+    }
+
+    .method-track {
+      gap: 3rem;
+    }
+
+    .method-step {
+      grid-template-columns: 2px minmax(0, 1fr);
+      column-gap: 2rem;
+    }
+
+    .method-icon {
+      display: none;
+    }
+
+    .method-line {
+      left: 0;
+    }
+
+    .method-content {
+      grid-column: 2;
+    }
+
+    .method-step h3 {
+      font-size: clamp(2rem, 10vw, 3rem);
+    }
+
+    .method-step p {
+      font-size: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .method-progress,
+    .method-step,
+    .method-icon {
+      transition: none;
+    }
+  }
+</style>

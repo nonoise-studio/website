@@ -2,11 +2,12 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import icon from 'astro-icon';
 import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
 	site: 'https://nonoisestudio.nl',
-	integrations: [mdx(), sitemap()],
+	integrations: [mdx(), sitemap(), icon()],
 	fonts: [
 		{
 			provider: fontProviders.local(),

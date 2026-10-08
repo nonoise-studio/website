@@ -1,0 +1,176 @@
+---
+interface Client {
+	name: string;
+	website: string;
+	logo: string;
+}
+
+interface Props {
+	clients: Client[];
+	direction?: 'left' | 'right' | 'none';
+	speed?: number;
+	class?: string;
+}
+
+const {
+	clients,
+	direction = 'left',
+	speed = 40,
+	class: className,
+} = Astro.props;
+---
+<script>
+	function setupBanner(banner: HTMLElement) {
+		const track = banner.querySelector<HTMLElement>('.track');
+		const inner = banner.querySelector<HTMLElement>('.inner');
+
+		if (!track || !inner) return;
+
+		const originalClients = [...inner.children].map((el) =>
+			el.cloneNode(true)
+		);
+
+		const direction = banner.dataset.direction as 'left' | 'right' | 'none';
+		const speed = parseFloat(banner.dataset.speed ?? '40');
+
+		const update = () => {
+			track.getAnimations().forEach((animation) => animation.cancel());
+
+			inner.innerHTML = '';
+
+			const bannerWidth = banner.getBoundingClientRect().width;
+
+			// Fill at least the width of the banner
+			do {
+				originalClients.forEach((client) => {
+					inner.appendChild(client.cloneNode(true));
+				});
+			} while (inner.getBoundingClientRect().width < bannerWidth);
+
+			const sequenceWidth = inner.getBoundingClientRect().width;
+
+			// Duplicate the sequence for seamless scrolling
+			const secondInner = inner.cloneNode(true) as HTMLElement;
+			secondInner.setAttribute('aria-hidden', 'true');
+
+			track.innerHTML = '';
+			track.appendChild(inner);
+			track.appendChild(secondInner);
+
+			track.style.width = `${sequenceWidth * 2}px`;
+
+			if (direction === 'none') {
+				track.style.transform = 'translateX(0)';
+				return;
+			}
+
+			const duration = (sequenceWidth / speed) * 1000;
+
+			const keyframes =
+				direction === 'left'
+					? [
+							{ transform: 'translateX(0)' },
+							{ transform: `translateX(-${sequenceWidth}px)` },
+						]
+					: [
+							{ transform: `translateX(-${sequenceWidth}px)` },
+							{ transform: 'translateX(0)' },
+						];
+
+			track.animate(keyframes, {
+				duration,
+				iterations: Infinity,
+				easing: 'linear',
+			});
+		};
+
+		update();
+
+		const ro = new ResizeObserver(update);
+		ro.observe(banner);
+	}
+
+	document.fonts.ready.then(() => {
+		document
+			.querySelectorAll<HTMLElement>('.client-banner')
+			.forEach(setupBanner);
+	});
+</script>
+<div
+	class:list={['client-banner', className]}
+	data-direction={direction}
+	data-speed={speed}
+>
+	<div class="track">
+		<div class="inner" aria-hidden="true">
+			{clients.map((client) => (
+				<a
+					href={client.website}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="client"
+					tabindex="-1"
+				>
+					<img class="client-logo" src={client.logo} alt={client.name} />
+				</a>
+			))}
+		</div>
+	</div>
+</div>
+
+<style>
+    .client-banner {
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        position: relative;
+    }
+
+    .track {
+        display: flex;
+        flex-shrink: 0;
+        will-change: transform;
+    }
+
+    .inner {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        padding: 0.5rem 0;
+    }
+
+    .client {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin: 0 1.5rem;
+        text-decoration: none;
+    }
+
+    .client-logo {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 9rem;
+        max-height: 4rem;
+        object-fit: contain;
+        border-radius: 0;
+
+        filter: grayscale(100%) contrast(0.8) brightness(1.2);
+        transition:
+            filter 0.3s ease,
+            transform 0.3s ease;
+    }
+
+    .client:hover .client-logo {
+        filter: grayscale(0%) contrast(1) brightness(1);
+        transform: scale(1.05);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .client-logo {
+            transition: none;
+        }
+    }
+</style>
