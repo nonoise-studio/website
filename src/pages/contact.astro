@@ -1,5 +1,7 @@
 ---
 import Page from '../layouts/Page.astro';
+
+const EMAIL_ADDRESS = 'nonoisestudio@mailbox.org';
 ---
 
 <Page title="Contact · nonoise" description="Get in touch with nonoise studio.">
@@ -10,8 +12,8 @@ import Page from '../layouts/Page.astro';
 		</p>
 
 		<div class="contact-links">
-			<a href="mailto:changeme@example.com">changeme@example.com</a>
-			<a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+			<a href={`mailto:${EMAIL_ADDRESS}`}>{EMAIL_ADDRESS}</a>
+			<a href="https://www.linkedin.com/in/thomas-bollen/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 		</div>
 
 		<div class="business-details">
