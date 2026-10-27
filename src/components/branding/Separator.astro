@@ -1,0 +1,26 @@
+---
+type Separator = "dot" | "pipe" | string;
+
+interface Props {
+  separator?: Separator | string;
+  style?: string;
+  class?: string;
+}
+
+const { separator = "•", style = "", class: className = "" } = Astro.props;
+
+const character_dict: Record<Separator, string> = {
+  dot: "•",
+  pipe: "|",
+};
+
+const character = character_dict?.[separator] || separator;
+---
+
+<span style={style} class={className + " nn-separator"}>{character}</span>
+
+<style>
+  .nn-separator {
+    margin-inline: 0.2em;
+  }
+</style>
